@@ -1,2 +1,0 @@
-# CryptoMancy
-Crypto Trading Platform
