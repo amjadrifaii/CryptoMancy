@@ -4,6 +4,7 @@ import DeltaOps.CryptoMancy.dao.impl.OrderDaoImpl;
 import DeltaOps.CryptoMancy.domain.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,4 +42,10 @@ public class OrderDaoImplTest {
         );
     }
 
+    @Test
+    public void TestSelectOneOrder()
+    {
+        underTest.findOne(1);
+        verify(jdbcTemplate).query(eq("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT = 1"), ArgumentMatchers.<OrderDaoImpl.OrderRowMapper>any(),eq(1L));
+    }
 }

@@ -2,6 +2,10 @@ package DeltaOps.CryptoMancy.dao;
 
 import DeltaOps.CryptoMancy.domain.Order;
 
+import java.util.Optional;
+
 public interface OrderDao {
-    public void create(Order order);
+     void create(Order order);
+
+    Optional<Order> findOne(long l);
 }

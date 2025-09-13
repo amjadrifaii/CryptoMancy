@@ -5,13 +5,16 @@ import DeltaOps.CryptoMancy.domain.Balance;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -23,7 +26,7 @@ public class BalanceDaoImplTest {
     private BalanceDaoImpl underTest;
 
     @Test
-    public void TestCreationBalance()
+    public void testCreationBalance()
     {
         Balance balance = Balance.builder()
                 .uid(5L)
@@ -33,5 +36,14 @@ public class BalanceDaoImplTest {
         underTest.create(balance);
         verify(jdbcTemplate).update(eq("INSERT INTO balances(uid, symbol, amount) VALUES(?, ?, ?)")
         ,eq(5L),eq("ETH"),eq(BigDecimal.valueOf(55.11233)));
+    }
+
+    @Test
+    public void testThatFindOneGeneratesTheCorrectSql()
+    {
+        underTest.findOne(1);
+        verify(jdbcTemplate).query(
+                eq("SELECT uid, name, email FROM users WHERE uid = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L)
+        );
     }
 }

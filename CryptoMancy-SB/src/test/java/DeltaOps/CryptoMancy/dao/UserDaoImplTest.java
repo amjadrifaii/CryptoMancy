@@ -1,9 +1,11 @@
+
 package DeltaOps.CryptoMancy.dao;
 
 import DeltaOps.CryptoMancy.dao.impl.UserDaoImpl;
 import DeltaOps.CryptoMancy.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -38,5 +40,12 @@ public class UserDaoImplTest {
                 eq(1L), eq("Test Name"), eq("testmail@mock.com"), eq("mock fire base uid"),
                 eq(java.time.LocalDateTime.of(2005,4,23,11,12))
         );
+    }
+
+    @Test
+    public void TestSelectOneUser()
+    {
+        underTest.findOne(1L);
+        verify(jdbcTemplate).query(eq("SELECT * FROM users WHERE uid = ? LIMIT = 1"), ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),eq(1L));
     }
 }

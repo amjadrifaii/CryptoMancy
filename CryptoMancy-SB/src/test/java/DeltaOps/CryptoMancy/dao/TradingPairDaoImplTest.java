@@ -4,6 +4,7 @@ import DeltaOps.CryptoMancy.dao.impl.TradingPairDaoImpl;
 import DeltaOps.CryptoMancy.domain.TradingPair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,5 +33,10 @@ public class TradingPairDaoImplTest {
         ,eq(2L),eq("ETH"),eq("USDT")
         );
     }
-
+    @Test
+    public void TestSelectOneTradingPair()
+    {
+        underTest.findOne(1L);
+        verify(jdbcTemplate).query(eq("SELECT * FROM trading_pairs WHERE pid = ? LIMIT = 1"), ArgumentMatchers.<TradingPairDaoImpl.TradingPairsRowMapper>any(),eq(1L));
+    }
 }
