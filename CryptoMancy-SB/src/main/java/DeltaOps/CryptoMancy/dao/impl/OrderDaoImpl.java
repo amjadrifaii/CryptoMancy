@@ -5,6 +5,7 @@ import DeltaOps.CryptoMancy.domain.Order;
 import org.mockito.ArgumentMatchers;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static javax.management.Query.eq;
-
+@Component
 public class OrderDaoImpl implements OrderDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,7 +31,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Optional<Order> findOne(long orderId)
     {
-        List<Order> orders = jdbcTemplate.query("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT = 1", new OrderRowMapper(),orderId);
+        List<Order> orders = jdbcTemplate.query("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT 1", new OrderRowMapper(),orderId);
         return orders.stream().findFirst();
     }
 

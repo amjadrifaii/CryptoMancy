@@ -1,6 +1,5 @@
 package DeltaOps.CryptoMancy.dao;
 
-import DeltaOps.CryptoMancy.dao.impl.BalanceDaoImpl;
 import DeltaOps.CryptoMancy.dao.impl.CoinDaoImpl;
 import DeltaOps.CryptoMancy.domain.Coin;
 import org.junit.jupiter.api.Test;
@@ -10,12 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-
+@Component
 @ExtendWith(MockitoExtension.class)
-public class CoinDaoImlpTest{
+public class CoinDaoImplTest {
 
     @Mock
     private JdbcTemplate jdbcTemplate;
@@ -41,7 +41,7 @@ public class CoinDaoImlpTest{
     @Test
     public void TestSelectOneCoin()
     {
-        underTest.findOne(1);
-        verify(jdbcTemplate).query(eq("SELECT symbol, name, type, contract_address, network, logo_url, description FROM coins WHERE symbol = ? LIMIT 1"), ArgumentMatchers.<CoinDaoImpl.CoinRowMapper>any(), eq(1L));
+        underTest.findOne("ETH");
+        verify(jdbcTemplate).query(eq("SELECT symbol, name, type, contract_address, network, logo_url, description FROM coins WHERE symbol = ? LIMIT 1"), ArgumentMatchers.<CoinDaoImpl.CoinRowMapper>any(), eq("ETH"));
     }
 }

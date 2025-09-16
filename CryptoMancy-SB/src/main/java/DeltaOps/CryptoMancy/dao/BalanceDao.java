@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface BalanceDao {
     void create(Balance balance);
 
-    Optional<Balance> findOne(long l);
+    Optional<Balance> findOne(long l, String s);
 }

@@ -39,11 +39,11 @@ public class BalanceDaoImplTest {
     }
 
     @Test
-    public void testThatFindOneGeneratesTheCorrectSql()
+    public void TestThatFindOneGeneratesTheCorrectSql()
     {
-        underTest.findOne(1);
+        underTest.findOne(1, "ETH");
         verify(jdbcTemplate).query(
-                eq("SELECT uid, name, email FROM users WHERE uid = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L)
+                eq("SELECT uid, name, email FROM users WHERE uid = ? AND symbol = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L), eq("ETH")
         );
     }
 }

@@ -4,14 +4,14 @@ import DeltaOps.CryptoMancy.dao.CoinDao;
 import DeltaOps.CryptoMancy.domain.Coin;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.eq;
-
+@Component
 public class CoinDaoImpl implements CoinDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -22,10 +22,10 @@ public class CoinDaoImpl implements CoinDao {
 
     @Override
     public void create(Coin coin) {
-        jdbcTemplate.update("INSERT INTO coins(symbol, name, type, contractAddress, network,logo_url, description) VALUES(?, ?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO coins(symbol, name, type, contract_address, network,logo_url, description) VALUES(?, ?, ?, ?, ?, ?, ?)",
                 coin.getSymbol(), coin.getName(), coin.getType(), coin.getContractAddress(), coin.getNetwork(), coin.getLogo_url(), coin.getDescription());
     }
-    public Optional<Coin> findOne(long coinSymbol)
+    public Optional<Coin> findOne(String coinSymbol)
     {
         List<Coin> coins = jdbcTemplate.query("SELECT symbol, name, type, contract_address, network, logo_url, description FROM coins WHERE symbol = ? LIMIT 1",new CoinRowMapper(),coinSymbol);
         return coins.stream().findFirst();

@@ -5,6 +5,7 @@ import DeltaOps.CryptoMancy.domain.Order;
 import DeltaOps.CryptoMancy.domain.Trade;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
-
+@Component
 public class TradeDaoImpl implements TradeDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -32,7 +33,7 @@ public class TradeDaoImpl implements TradeDao {
     @Override
     public Optional<Trade> findOne(long tradeId)
     {
-        List<Trade> trades = jdbcTemplate.query(eq("SELECT * FROM trades WHERE tid = ? LIMIT = 1"),new TradeRowMapper(), tradeId);
+        List<Trade> trades = jdbcTemplate.query("SELECT * FROM trades WHERE tid = ? LIMIT 1",new TradeRowMapper(), tradeId);
         return trades.stream().findFirst();
     }
 

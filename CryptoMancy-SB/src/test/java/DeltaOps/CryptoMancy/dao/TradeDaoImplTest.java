@@ -48,4 +48,5 @@ public class TradeDaoImplTest {
         underTest.findOne(1L);
         verify(jdbcTemplate).query(eq("SELECT * FROM trades WHERE tid = ? LIMIT 1"), ArgumentMatchers.<TradeDaoImpl.TradeRowMapper>any(),eq(1L));
     }
+
 }

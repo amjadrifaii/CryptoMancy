@@ -1,6 +1,7 @@
 
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.UserDaoImpl;
 import DeltaOps.CryptoMancy.domain.User;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -26,13 +29,7 @@ public class UserDaoImplTest {
     @Test
     public void testCreateUser()
     {
-        User user = User.builder()
-                .uid(1L)
-                .name("Test Name")
-                .email("testmail@mock.com")
-                .firebase_uid("mock fire base uid")
-                .creation_date(java.time.LocalDateTime.of(2005,4,23,11,12))
-                .build();
+        User user = TestDataUtil.CreateUser();
         underTest.create(user);
 
         verify(jdbcTemplate).update(
@@ -42,10 +39,19 @@ public class UserDaoImplTest {
         );
     }
 
+
+
     @Test
     public void TestSelectOneUser()
     {
         underTest.findOne(1L);
-        verify(jdbcTemplate).query(eq("SELECT * FROM users WHERE uid = ? LIMIT = 1"), ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),eq(1L));
+        verify(jdbcTemplate).query(eq("SELECT * FROM users WHERE uid = ? LIMIT 1"), ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),eq(1L));
     }
+    @Test
+    public void TestSelectManyUsers()
+    {
+        underTest.findMany();
+        verify(jdbcTemplate).query(eq("SELECT * FROM users"),ArgumentMatchers.<UserDaoImpl.UserRowMapper>any());
+    }
+
 }

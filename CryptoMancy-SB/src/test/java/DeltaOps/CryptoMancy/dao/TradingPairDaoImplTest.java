@@ -37,6 +37,6 @@ public class TradingPairDaoImplTest {
     public void TestSelectOneTradingPair()
     {
         underTest.findOne(1L);
-        verify(jdbcTemplate).query(eq("SELECT * FROM trading_pairs WHERE pid = ? LIMIT = 1"), ArgumentMatchers.<TradingPairDaoImpl.TradingPairsRowMapper>any(),eq(1L));
+        verify(jdbcTemplate).query(eq("SELECT * FROM trading_pairs WHERE pid = ? LIMIT 1"), ArgumentMatchers.<TradingPairDaoImpl.TradingPairsRowMapper>any(),eq(1L));
     }
 }

@@ -4,11 +4,13 @@ import DeltaOps.CryptoMancy.dao.UserDao;
 import DeltaOps.CryptoMancy.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+@Component
 
 public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
@@ -27,10 +29,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findOne(long userId)
     {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE uid = ? LIMIT = 1",new UserRowMapper(),userId);
+        List<User> users = jdbcTemplate.query("SELECT uid, name, email, firebase_uid, creation_Date  FROM users WHERE uid = ? LIMIT 1",new UserRowMapper(),userId);
         return users.stream().findFirst();
     }
 
+    @Override
+    public List<User> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM users",new UserRowMapper());
+    }
     public static class UserRowMapper implements RowMapper<User>
     {
         @Override

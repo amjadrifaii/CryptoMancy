@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface CoinDao {
     void create(Coin coin);
 
-    Optional<Coin> findOne(long l);
+    Optional<Coin> findOne(String s);
 }

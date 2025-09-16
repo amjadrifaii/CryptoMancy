@@ -46,6 +46,6 @@ public class OrderDaoImplTest {
     public void TestSelectOneOrder()
     {
         underTest.findOne(1);
-        verify(jdbcTemplate).query(eq("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT = 1"), ArgumentMatchers.<OrderDaoImpl.OrderRowMapper>any(),eq(1L));
+        verify(jdbcTemplate).query(eq("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT 1"), ArgumentMatchers.<OrderDaoImpl.OrderRowMapper>any(),eq(1L));
     }
 }

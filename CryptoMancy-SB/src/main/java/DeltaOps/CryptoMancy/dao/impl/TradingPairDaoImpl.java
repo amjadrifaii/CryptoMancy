@@ -5,6 +5,7 @@ import DeltaOps.CryptoMancy.domain.Trade;
 import DeltaOps.CryptoMancy.domain.TradingPair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
-
+@Component
 public class TradingPairDaoImpl implements TradingPairDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -25,14 +26,13 @@ public class TradingPairDaoImpl implements TradingPairDao {
     public void create(TradingPair tradingPair) {
         jdbcTemplate.update("INSERT INTO trading_pairs(pid, base_symbol, quote_symbol) VALUES(?, ?, ?)",
                 tradingPair.getPid(),tradingPair.getBase_symbol(),tradingPair.getQuote_symbol()
-
         );
     }
     @Override
 
     public Optional<TradingPair> findOne(long tradingPairId)
     {
-        List<TradingPair> tradingPairs = jdbcTemplate.query("SELECT * FROM trading_pairs WHERE pid = ? LIMIT = 1",new TradingPairsRowMapper(), tradingPairId);
+        List<TradingPair> tradingPairs = jdbcTemplate.query("SELECT * FROM trading_pairs WHERE pid = ? LIMIT 1",new TradingPairsRowMapper(), tradingPairId);
                 return tradingPairs.stream().findFirst();
     }
 
