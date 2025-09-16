@@ -2,6 +2,7 @@ package DeltaOps.CryptoMancy;
 
 import DeltaOps.CryptoMancy.dao.TradingPairDao;
 import DeltaOps.CryptoMancy.domain.*;
+import org.checkerframework.checker.units.qual.C;
 
 import java.math.BigDecimal;
 
@@ -31,12 +32,21 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Balance CreateBalance(Long userId)
+    public static Balance CreateBalance(Long userId, /*Coin coin*/)
     {
         return Balance.builder()
                 .uid(userId)
                 .amount(new BigDecimal(0))
-                .symbol("USDT")
+                .symbol(/*coin.getSymbol()*/)
+                .build();
+    }
+
+    public static Balance CreateEthBalance(Long userId,/*Coin coin*/)
+    {
+        return Balance.builder()
+                .uid(userId)
+                .amount(new BigDecimal(55))
+                .symbol(/*coin.getSymbol()*/)
                 .build();
     }
 

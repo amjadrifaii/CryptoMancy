@@ -34,6 +34,12 @@ public class BalanceDaoImpl implements BalanceDao {
         return balances.stream().findFirst();
     }
 
+    @Override
+    public List<Balance> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM balances",new BalanceRowMapper());
+    }
+
     public static class BalanceRowMapper implements RowMapper<Balance>
     {
         @Override
