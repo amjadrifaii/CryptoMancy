@@ -1,7 +1,10 @@
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.BalanceDaoImpl;
 import DeltaOps.CryptoMancy.domain.Balance;
+import DeltaOps.CryptoMancy.domain.Coin;
+import DeltaOps.CryptoMancy.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
@@ -45,5 +48,15 @@ public class BalanceDaoImplTest {
         verify(jdbcTemplate).query(
                 eq("SELECT uid, symbol, amount FROM balances WHERE uid = ? AND symbol = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L), eq("ETH")
         );
+    }
+
+    @Test
+    public void TestUpdateBalance()
+    {
+        Balance balance = TestDataUtil.CreateBalance(TestDataUtil.CreateUser(),TestDataUtil.CreateCoin());
+
+        underTest.update(TestDataUtil.CreateSecondUser(),balance);
+        verify(jdbcTemplate).update(eq("UPDATE balances SET uid = ? WHERE uid = ?"),eq(TestDataUtil.CreateSecondUser().getUid()),eq(balance.getUid()));
+
     }
 }

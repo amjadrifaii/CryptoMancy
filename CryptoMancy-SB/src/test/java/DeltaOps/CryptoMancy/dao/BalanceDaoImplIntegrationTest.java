@@ -66,9 +66,16 @@ public class BalanceDaoImplIntegrationTest {
         List<Balance> balancesUnderTest = new ArrayList<>();
         balancesUnderTest.add(firstBalance);
         balancesUnderTest.add(secondBalance);
-        assertThat(balances.containsAll(balancesUnderTest));
         for(int i=0;i<balances.size();i++)
             System.out.println(balances.get(i).getSymbol());
+    }
 
+    @Test
+    public void TestForUpdatingBalance()
+    {
+        User user = TestDataUtil.CreateUser();
+        Coin coin = TestDataUtil.CreateCoin();
+        Balance balance = TestDataUtil.CreateBalance(user, coin);
+        underTest.create(balance);
     }
 }

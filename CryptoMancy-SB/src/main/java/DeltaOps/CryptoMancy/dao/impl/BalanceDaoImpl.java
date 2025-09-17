@@ -2,6 +2,7 @@ package DeltaOps.CryptoMancy.dao.impl;
 
 import DeltaOps.CryptoMancy.dao.BalanceDao;
 import DeltaOps.CryptoMancy.domain.Balance;
+import DeltaOps.CryptoMancy.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,11 @@ public class BalanceDaoImpl implements BalanceDao {
         return jdbcTemplate.query("SELECT * FROM balances",new BalanceRowMapper());
     }
 
+    @Override
+    public void update(User user, Balance balance)
+    {
+        jdbcTemplate.update("UPDATE balances SET uid = ? WHERE uid = ?", user.getUid(),balance.getUid());
+    }
     public static class BalanceRowMapper implements RowMapper<Balance>
     {
         @Override
