@@ -1,4 +1,6 @@
 -- USERS
+
+
 INSERT INTO users (name, email, firebase_uid) VALUES
 ('Alice','alice@example.com','firebase_alice'),
 ('Bob','bob@example.com','firebase_bob');

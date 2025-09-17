@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+
 public class CoinDaoImpl implements CoinDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,6 +32,12 @@ public class CoinDaoImpl implements CoinDao {
         return coins.stream().findFirst();
     }
 
+    @Override
+    public List<Coin> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM coins",new CoinRowMapper());
+    }
+
     public static class CoinRowMapper implements RowMapper<Coin>
     {
         @Override
@@ -47,4 +54,5 @@ public class CoinDaoImpl implements CoinDao {
                     .build();
         }
     }
+
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+
 public class OrderDaoImpl implements OrderDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -33,6 +34,12 @@ public class OrderDaoImpl implements OrderDao {
     {
         List<Order> orders = jdbcTemplate.query("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT 1", new OrderRowMapper(),orderId);
         return orders.stream().findFirst();
+    }
+
+    @Override
+    public List<Order> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM orders",new OrderRowMapper());
     }
 
     public static class OrderRowMapper implements RowMapper<Order>

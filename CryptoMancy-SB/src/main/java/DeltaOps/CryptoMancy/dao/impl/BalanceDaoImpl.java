@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+
 public class BalanceDaoImpl implements BalanceDao {
     private final JdbcTemplate jdbcTemplate;
 

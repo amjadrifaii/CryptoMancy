@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 @Component
+
 public class TradingPairDaoImpl implements TradingPairDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -34,6 +35,12 @@ public class TradingPairDaoImpl implements TradingPairDao {
     {
         List<TradingPair> tradingPairs = jdbcTemplate.query("SELECT * FROM trading_pairs WHERE pid = ? LIMIT 1",new TradingPairsRowMapper(), tradingPairId);
                 return tradingPairs.stream().findFirst();
+    }
+
+    @Override
+    public List<TradingPair> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM trading_pairs",new TradingPairsRowMapper());
     }
 
     public static class TradingPairsRowMapper implements RowMapper<TradingPair>

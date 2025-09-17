@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 @Component
+
 public class TradeDaoImpl implements TradeDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -37,6 +38,11 @@ public class TradeDaoImpl implements TradeDao {
         return trades.stream().findFirst();
     }
 
+    @Override
+    public List<Trade> findMany()
+    {
+        return jdbcTemplate.query("SELECT * FROM trades",new TradeRowMapper());
+    }
     public static class TradeRowMapper implements RowMapper<Trade>
     {
         @Override

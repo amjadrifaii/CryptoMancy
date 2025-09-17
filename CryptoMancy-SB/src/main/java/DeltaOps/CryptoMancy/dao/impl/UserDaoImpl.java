@@ -29,7 +29,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findOne(long userId)
     {
-        List<User> users = jdbcTemplate.query("SELECT uid, name, email, firebase_uid, creation_Date  FROM users WHERE uid = ? LIMIT 1",new UserRowMapper(),userId);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE uid = ? LIMIT 1",new UserRowMapper(),userId);
         return users.stream().findFirst();
     }
 

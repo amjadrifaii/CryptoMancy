@@ -33,8 +33,8 @@ public class UserDaoImplTest {
         underTest.create(user);
 
         verify(jdbcTemplate).update(
-                eq("INSERT INTO users (uid, name, email, firebase_uid, creation_date) VALUES (?, ?, ?, ?, ?)"),
-                eq(1L), eq("Test Name"), eq("testmail@mock.com"), eq("mock fire base uid"),
+                eq("INSERT INTO users(uid, name, email, firebase_uid, creation_date) VALUES (?, ?, ?, ?, ?)"),
+                eq(4L), eq("Test Name"), eq("testmail@mock.com"), eq("mock fire base uid"),
                 eq(java.time.LocalDateTime.of(2005,4,23,11,12))
         );
     }
@@ -44,8 +44,8 @@ public class UserDaoImplTest {
     @Test
     public void TestSelectOneUser()
     {
-        underTest.findOne(1L);
-        verify(jdbcTemplate).query(eq("SELECT * FROM users WHERE uid = ? LIMIT 1"), ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),eq(1L));
+        underTest.findOne(4L);
+        verify(jdbcTemplate).query(eq("SELECT * FROM users WHERE uid = ? LIMIT 1"), ArgumentMatchers.<UserDaoImpl.UserRowMapper>any(),eq(4L));
     }
     @Test
     public void TestSelectManyUsers()

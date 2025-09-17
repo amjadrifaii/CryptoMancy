@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderDaoImplIntegrationTest {
     private final OrderDaoImpl underTest;
     private final UserDaoImpl userDaoImpl;
@@ -53,4 +56,48 @@ public class OrderDaoImplIntegrationTest {
         assertThat(orders).isPresent();
         assertThat(orders.get()).isEqualTo(order);
     }
+
+    @Test
+    public void TestMultipleOrdersCreationAndFetch()
+    {
+        User user = TestDataUtil.CreateUser();
+        User secondUser = TestDataUtil.CreateSecondUser();
+        userDaoImpl.create(user);
+        userDaoImpl.create(secondUser);
+
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        Coin thirdCoin = TestDataUtil.CreateThirdCoin();
+        coinDaoImpl.create(firstCoin);
+        coinDaoImpl.create(secondCoin);
+        coinDaoImpl.create(thirdCoin);
+
+        TradingPair firstPair = TestDataUtil.CreateTradingPair(firstCoin,secondCoin);
+        TradingPair secondPair = TestDataUtil.CreateSecondTradingPair(secondCoin,thirdCoin);
+        TradingPair thirdPair = TestDataUtil.CreateThirdTradingPair(firstCoin,thirdCoin);
+        tradingPairDao.create(firstPair);
+        tradingPairDao.create(secondPair);
+        tradingPairDao.create(thirdPair);
+
+
+        Order firstOrder = TestDataUtil.CreateOrder(user,firstPair);
+        Order secondOrder = TestDataUtil.CreateSecondOrder(user,secondPair);
+        Order thirdOrder = TestDataUtil.CreateThirdOrder(secondUser,thirdPair);
+        Order fourthOrder = TestDataUtil.CreateFourthOrder(secondUser,firstPair);
+        underTest.create(firstOrder);
+        underTest.create(secondOrder);
+        underTest.create(thirdOrder);
+        underTest.create(fourthOrder);
+
+        List<Order> orders = underTest.findMany();
+        List<Order> ordersUnderTest = new ArrayList<>();
+        ordersUnderTest.add(firstOrder);
+        ordersUnderTest.add(secondOrder);
+        ordersUnderTest.add(thirdOrder);
+        ordersUnderTest.add(fourthOrder);
+        assertThat(orders.containsAll(ordersUnderTest));
+        for(int i=0;i<orders.size();i++)
+            System.out.println(orders.get(i).getUid());
+    }
+
 }

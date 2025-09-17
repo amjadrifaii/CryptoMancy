@@ -43,7 +43,7 @@ public class BalanceDaoImplTest {
     {
         underTest.findOne(1, "ETH");
         verify(jdbcTemplate).query(
-                eq("SELECT uid, name, email FROM users WHERE uid = ? AND symbol = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L), eq("ETH")
+                eq("SELECT uid, symbol, amount FROM balances WHERE uid = ? AND symbol = ? LIMIT 1"), ArgumentMatchers.<BalanceDaoImpl.BalanceRowMapper>any(), eq(1L), eq("ETH")
         );
     }
 }

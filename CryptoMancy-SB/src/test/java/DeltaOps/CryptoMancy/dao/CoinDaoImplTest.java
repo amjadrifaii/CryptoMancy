@@ -35,7 +35,7 @@ public class CoinDaoImplTest {
                 .description("newly added")
                 .build();
         underTest.create(coin);
-        verify(jdbcTemplate).update(eq("INSERT INTO coins(symbol, name, type, contractAddress, network,logo_url, description) VALUES(?, ?, ?, ?, ?, ?, ?)")
+        verify(jdbcTemplate).update(eq("INSERT INTO coins(symbol, name, type, contract_address, network,logo_url, description) VALUES(?, ?, ?, ?, ?, ?, ?)")
         ,eq("ETH"), eq("Ethereum"), eq("Token"), eq("ERC-20"), eq("ETH"), eq("link"),eq("newly added"));
     }
     @Test

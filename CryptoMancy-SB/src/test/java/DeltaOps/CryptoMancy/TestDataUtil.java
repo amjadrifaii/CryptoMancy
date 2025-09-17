@@ -5,6 +5,7 @@ import DeltaOps.CryptoMancy.domain.*;
 import org.checkerframework.checker.units.qual.C;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public final class TestDataUtil {
     private TestDataUtil()
@@ -32,47 +33,51 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Balance CreateBalance(Long userId, /*Coin coin*/)
+    public static Balance CreateBalance(User user, Coin coin)
     {
         return Balance.builder()
-                .uid(userId)
+                .uid(user.getUid())
                 .amount(new BigDecimal(0))
-                .symbol(/*coin.getSymbol()*/)
-                .build();
-    }
-
-    public static Balance CreateEthBalance(Long userId,/*Coin coin*/)
-    {
-        return Balance.builder()
-                .uid(userId)
-                .amount(new BigDecimal(55))
-                .symbol(/*coin.getSymbol()*/)
+                .symbol(coin.getSymbol())
                 .build();
     }
 
     public static Coin CreateCoin()
     {
         return Coin.builder()
-                .symbol("SOL")
-                .name("Solana")
-                .type("Token")
-                .contractAddress("ERC-20")
-                .network("BTC")
-                .logo_url("some url")
-                .description("a nice coin")
+                .symbol("Test Coin 1")
+                .name("Test Coin 1 Name")
+                .type("Test Coin 1 Type")
+                .contractAddress("Test Coin 1 Contract Address")
+                .network("Test Coin 1 Network")
+                .logo_url("Test Coin 1 Logo Url")
+                .description("Test Coin 1 Description")
                 .build();
     }
 
     public static Coin CreateSecondCoin()
     {
         return Coin.builder()
-                .symbol("TEST")
-                .name("TEST")
-                .type("TEST")
-                .contractAddress("TEST")
-                .network("TEST")
-                .logo_url("some url")
-                .description("highest priced coin")
+                .symbol("Test Coin 2")
+                .name("Test Coin 2 Name")
+                .type("Test Coin 2 Type")
+                .contractAddress("Test Coin 2 Contract Address")
+                .network("Test Coin 2 Network")
+                .logo_url("Test Coin 2 Logo Url")
+                .description("Test Coin 2 Description")
+                .build();
+    }
+
+    public static Coin CreateThirdCoin() {
+
+        return Coin.builder()
+                .symbol("Test Coin 3")
+                .name("Test Coin 3 Name")
+                .type("Test Coin 3 Type")
+                .contractAddress("Test Coin 3 Contract Address")
+                .network("Test Coin 3 Network")
+                .logo_url("Test Coin 3 Logo Url")
+                .description("Test Coin 3 Description")
                 .build();
     }
 
@@ -104,10 +109,55 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static Order CreateThirdOrder(User user, TradingPair pair)
+    {
+        return Order.builder()
+                .oid(111L)
+                .uid(user.getUid())
+                .pid(pair.getPid())
+                .side("SELL")
+                .price(new BigDecimal(255.5))
+                .amount(new BigDecimal(55))
+                .status("OPEN")
+                .creation_date(java.time.LocalDate.of(2004, 1, 1))
+                .build();
+    }
+
+    public static Order CreateFourthOrder(User user, TradingPair pair)
+    {
+        return Order.builder()
+                .oid(222L)
+                .uid(user.getUid())
+                .pid(pair.getPid())
+                .side("SELL")
+                .price(new BigDecimal(255.5))
+                .amount(new BigDecimal(55))
+                .status("OPEN")
+                .creation_date(java.time.LocalDate.of(2004, 1, 1))
+                .build();
+    }
+
     public static TradingPair CreateTradingPair(Coin firstCoin, Coin secondCoin)
     {
         return TradingPair.builder()
-                .pid(16L)
+                .pid(111L)
+                .base_symbol(firstCoin.getSymbol())
+                .quote_symbol(secondCoin.getSymbol())
+                .build();
+    }
+    public static TradingPair CreateSecondTradingPair(Coin firstCoin, Coin secondCoin)
+    {
+        return TradingPair.builder()
+                .pid(222L)
+                .base_symbol(firstCoin.getSymbol())
+                .quote_symbol(secondCoin.getSymbol())
+                .build();
+    }
+
+    public static TradingPair CreateThirdTradingPair(Coin firstCoin, Coin secondCoin)
+    {
+        return TradingPair.builder()
+                .pid(1234L)
                 .base_symbol(firstCoin.getSymbol())
                 .quote_symbol(secondCoin.getSymbol())
                 .build();
@@ -125,4 +175,18 @@ public final class TestDataUtil {
                 .executed_at(java.time.LocalDate.of(2002,2,2))
                 .build();
     }
+
+    public static Trade CreateSecondTrade(Order buyOrder, Order sellOrder) {
+
+        return Trade.builder()
+                .tid(100L)
+                .buy_order_id(buyOrder.getOid())
+                .sell_order_id(sellOrder.getOid())
+                .pid(buyOrder.getPid())
+                .price(new BigDecimal(2156.33))
+                .amount(new BigDecimal(223.112))
+                .executed_at(java.time.LocalDate.of(2002,2,2))
+                .build();
+    }
 }
+

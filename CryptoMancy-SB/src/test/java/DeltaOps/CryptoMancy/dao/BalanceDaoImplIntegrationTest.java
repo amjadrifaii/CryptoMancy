@@ -2,8 +2,10 @@ package DeltaOps.CryptoMancy.dao;
 
 import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.BalanceDaoImpl;
+import DeltaOps.CryptoMancy.dao.impl.CoinDaoImpl;
 import DeltaOps.CryptoMancy.dao.impl.UserDaoImpl;
 import DeltaOps.CryptoMancy.domain.Balance;
+import DeltaOps.CryptoMancy.domain.Coin;
 import DeltaOps.CryptoMancy.domain.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,17 +28,21 @@ public class BalanceDaoImplIntegrationTest {
 
     private BalanceDaoImpl underTest;
     private UserDaoImpl userDaoImpl;
+    private CoinDaoImpl coinDaoImpl;
     @Autowired
-    public BalanceDaoImplIntegrationTest(BalanceDaoImpl underTest, UserDaoImpl userDaoImpl) {
+    public BalanceDaoImplIntegrationTest(BalanceDaoImpl underTest, UserDaoImpl userDaoImpl, CoinDaoImpl coinDaoImpl) {
         this.underTest = underTest;
         this.userDaoImpl = userDaoImpl;
+        this.coinDaoImpl = coinDaoImpl;
     }
     @Test
     public void TestCreateBalanceAndFetch()
     {
         User user = TestDataUtil.CreateUser();
         userDaoImpl.create(user);
-        Balance balance = TestDataUtil.CreateBalance(user.getUid());
+        Coin coin = TestDataUtil.CreateCoin();
+        coinDaoImpl.create(coin);
+        Balance balance = TestDataUtil.CreateBalance(user,coin);
         underTest.create(balance);
         Optional<Balance> balances = underTest.findOne(balance.getUid(),balance.getSymbol());
         assertThat(balances).isPresent();
@@ -48,14 +54,18 @@ public class BalanceDaoImplIntegrationTest {
     {
         User user = TestDataUtil.CreateUser();
         userDaoImpl.create(user);
-        Balance usdtBalance = TestDataUtil.CreateBalance(user.getUid());
-        Balance ethBalance = TestDataUtil.CreateEthBalance(user.getUid());
-        underTest.create(usdtBalance);
-        underTest.create(ethBalance);
+        Coin coin = TestDataUtil.CreateCoin();
+        coinDaoImpl.create(coin);
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        coinDaoImpl.create(secondCoin);
+        Balance firstBalance = TestDataUtil.CreateBalance(user, coin);
+        Balance secondBalance = TestDataUtil.CreateBalance(user,secondCoin);
+        underTest.create(firstBalance);
+        underTest.create(secondBalance);
         List<Balance> balances = underTest.findMany();
         List<Balance> balancesUnderTest = new ArrayList<>();
-        balancesUnderTest.add(usdtBalance);
-        balancesUnderTest.add(ethBalance);
+        balancesUnderTest.add(firstBalance);
+        balancesUnderTest.add(secondBalance);
         assertThat(balances.containsAll(balancesUnderTest));
         for(int i=0;i<balances.size();i++)
             System.out.println(balances.get(i).getSymbol());
