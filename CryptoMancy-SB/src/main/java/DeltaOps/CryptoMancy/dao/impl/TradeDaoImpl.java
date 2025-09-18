@@ -32,6 +32,13 @@ public class TradeDaoImpl implements TradeDao {
     }
 
     @Override
+    public  void update(Trade oldTrade, Trade newTrade)
+    {
+        jdbcTemplate.update("UPDATE trades SET tid = ?, buy_order_id = ?, sell_order_id = ?, pid = ?, price = ? , amount = ?, executed_at = ? WHERE tid = ?",
+                newTrade.getTid(), newTrade.getBuy_order_id(), newTrade.getSell_order_id(), newTrade.getPid(), newTrade.getPrice(), newTrade.getAmount(), newTrade.getExecuted_at(), oldTrade.getTid());
+    }
+
+    @Override
     public Optional<Trade> findOne(long tradeId)
     {
         List<Trade> trades = jdbcTemplate.query("SELECT * FROM trades WHERE tid = ? LIMIT 1",new TradeRowMapper(), tradeId);

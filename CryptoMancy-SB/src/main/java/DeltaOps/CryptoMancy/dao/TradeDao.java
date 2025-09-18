@@ -1,6 +1,7 @@
 package DeltaOps.CryptoMancy.dao;
 
 import DeltaOps.CryptoMancy.domain.Trade;
+import DeltaOps.CryptoMancy.domain.TradingPair;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface TradeDao {
 
     List<Trade> findMany();
 
+
+    void update(Trade oldTrade, Trade newTrade);
 }

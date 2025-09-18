@@ -185,8 +185,7 @@ public final class TestDataUtil {
                 .pid(buyOrder.getPid())
                 .price(new BigDecimal(2156.33))
                 .amount(new BigDecimal(223.112))
-                .executed_at(java.time.LocalDate.of(2002,2,2))
+                .executed_at(java.time.LocalDate.of(2025,3,3))
                 .build();
     }
 }
-

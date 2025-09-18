@@ -1,6 +1,8 @@
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.TradingPairDaoImpl;
+import DeltaOps.CryptoMancy.domain.Coin;
 import DeltaOps.CryptoMancy.domain.TradingPair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,5 +40,19 @@ public class TradingPairDaoImplTest {
     {
         underTest.findOne(1L);
         verify(jdbcTemplate).query(eq("SELECT * FROM trading_pairs WHERE pid = ? LIMIT 1"), ArgumentMatchers.<TradingPairDaoImpl.TradingPairsRowMapper>any(),eq(1L));
+    }
+
+    @Test
+    public void TestUpdateTradingPair()
+    {
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        Coin thirdCoin = TestDataUtil.CreateThirdCoin();
+        TradingPair oldPair = TestDataUtil.CreateTradingPair(firstCoin,secondCoin);
+        TradingPair newPair = TestDataUtil.CreateTradingPair(firstCoin,thirdCoin);
+        underTest.update(oldPair,newPair);
+        verify(jdbcTemplate).update(eq("UPDATE trading_pairs SET pid = ?, base_symbol = ?, quote_symbol = ? WHERE pid = ?"),
+                eq(newPair.getPid()), eq(newPair.getBase_symbol()), eq(newPair.getQuote_symbol()), eq(oldPair.getPid()));
+
     }
 }

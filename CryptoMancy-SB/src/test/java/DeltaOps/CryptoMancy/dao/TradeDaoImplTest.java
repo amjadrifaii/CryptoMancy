@@ -1,7 +1,8 @@
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.TradeDaoImpl;
-import DeltaOps.CryptoMancy.domain.Trade;
+import DeltaOps.CryptoMancy.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -49,4 +50,29 @@ public class TradeDaoImplTest {
         verify(jdbcTemplate).query(eq("SELECT * FROM trades WHERE tid = ? LIMIT 1"), ArgumentMatchers.<TradeDaoImpl.TradeRowMapper>any(),eq(1L));
     }
 
+    @Test
+    public void TestUpateTrade()
+    {
+        User firstUser = TestDataUtil.CreateUser();
+        User secondUser = TestDataUtil.CreateSecondUser();
+
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        Coin thirdCoin = TestDataUtil.CreateThirdCoin();
+
+        TradingPair firstPair = TestDataUtil.CreateTradingPair(firstCoin, secondCoin);
+        TradingPair secondPair = TestDataUtil.CreateSecondTradingPair(secondCoin, thirdCoin);
+
+        Order firstOrder = TestDataUtil.CreateOrder(firstUser, firstPair);
+        Order secondOrder = TestDataUtil.CreateSecondOrder(secondUser, firstPair);
+        Order thirdOrder = TestDataUtil.CreateThirdOrder(secondUser, secondPair);
+
+        Trade oldTrade = TestDataUtil.CreateTrade(firstOrder,secondOrder);
+        Trade newTrade = TestDataUtil.CreateSecondTrade(firstOrder,thirdOrder);
+
+        underTest.update(oldTrade,newTrade);
+        verify(jdbcTemplate).update(eq("UPDATE trades SET tid = ?, buy_order_id = ?, sell_order_id = ?, pid = ?, price = ? , amount = ?, executed_at = ? WHERE tid = ?"),
+                eq(newTrade.getTid()), eq(newTrade.getBuy_order_id()), eq(newTrade.getSell_order_id()), eq(newTrade.getPid()), eq(newTrade.getPrice()), eq(newTrade.getAmount()),
+                eq(newTrade.getExecuted_at()), eq(oldTrade.getTid()));
+    }
 }

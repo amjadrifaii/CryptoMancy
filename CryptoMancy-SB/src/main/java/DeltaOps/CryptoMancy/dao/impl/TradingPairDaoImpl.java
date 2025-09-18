@@ -29,8 +29,14 @@ public class TradingPairDaoImpl implements TradingPairDao {
                 tradingPair.getPid(),tradingPair.getBase_symbol(),tradingPair.getQuote_symbol()
         );
     }
-    @Override
 
+    @Override
+    public void update(TradingPair oldPair, TradingPair newPair)
+    {
+        jdbcTemplate.update("UPDATE trading_pairs SET pid = ?, base_symbol = ?, quote_symbol = ? WHERE pid = ?",
+                newPair.getPid(),newPair.getBase_symbol(),newPair.getQuote_symbol(),oldPair.getPid());
+    }
+    @Override
     public Optional<TradingPair> findOne(long tradingPairId)
     {
         List<TradingPair> tradingPairs = jdbcTemplate.query("SELECT * FROM trading_pairs WHERE pid = ? LIMIT 1",new TradingPairsRowMapper(), tradingPairId);

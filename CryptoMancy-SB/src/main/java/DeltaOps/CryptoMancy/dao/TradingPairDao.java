@@ -11,4 +11,6 @@ public interface TradingPairDao {
     Optional<TradingPair> findOne(long l);
 
     List<TradingPair> findMany();
+
+    void update(TradingPair oldPair, TradingPair newPair);
 }

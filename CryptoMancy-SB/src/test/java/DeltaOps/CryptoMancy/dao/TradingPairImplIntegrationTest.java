@@ -76,4 +76,24 @@ public class TradingPairImplIntegrationTest {
 
 
     }
+
+    @Test
+    public void TestUpdatingTradingPair()
+    {
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        Coin thirdCoin = TestDataUtil.CreateThirdCoin();
+        coinDaoImpl.create(firstCoin);
+        coinDaoImpl.create(secondCoin);
+        coinDaoImpl.create(thirdCoin);
+
+
+        TradingPair oldPair = TestDataUtil.CreateTradingPair(firstCoin,secondCoin);
+        TradingPair newPair = TestDataUtil.CreateSecondTradingPair(firstCoin,thirdCoin);
+        underTest.create(oldPair);
+
+        underTest.update(oldPair,newPair);
+        assertThat(underTest.findOne(newPair.getPid())).isPresent();
+        System.out.println(underTest.findOne(newPair.getPid()));
+    }
 }
