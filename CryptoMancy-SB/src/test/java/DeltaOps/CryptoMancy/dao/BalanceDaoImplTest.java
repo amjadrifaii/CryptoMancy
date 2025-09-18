@@ -53,10 +53,11 @@ public class BalanceDaoImplTest {
     @Test
     public void TestUpdateBalance()
     {
-        Balance balance = TestDataUtil.CreateBalance(TestDataUtil.CreateUser(),TestDataUtil.CreateCoin());
+        User user = TestDataUtil.CreateUser();
+        Balance oldBalance = TestDataUtil.CreateBalance(user,TestDataUtil.CreateCoin());
+        Balance newBalance = TestDataUtil.CreateBalance(user,TestDataUtil.CreateSecondCoin());
 
-        underTest.update(TestDataUtil.CreateSecondUser(),balance);
-        verify(jdbcTemplate).update(eq("UPDATE balances SET uid = ? WHERE uid = ?"),eq(TestDataUtil.CreateSecondUser().getUid()),eq(balance.getUid()));
-
+        underTest.update(oldBalance,newBalance);
+        verify(jdbcTemplate).update(eq("UPDATE balances SET uid = ?,symbol = ?, amount = ? WHERE uid = ?"),eq(newBalance .getUid()), eq(newBalance .getSymbol()), eq(newBalance .getAmount()),eq(oldBalance.getUid()));
     }
 }

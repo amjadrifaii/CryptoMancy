@@ -53,4 +53,16 @@ public class CoinDaoImplIntegrationTest {
         for(int i=0;i<coinList.size();i++)
             System.out.println(coinList.get(i).getSymbol());
     }
+
+    @Test
+    public void TestForUpdatingCoin()
+    {
+        Coin oldCoin = TestDataUtil.CreateCoin();
+        Coin newCoin = TestDataUtil.CreateSecondCoin();
+        underTest.create(oldCoin);
+
+        underTest.update(oldCoin,newCoin);
+        System.out.println(underTest.findOne(newCoin.getSymbol()));
+
+    }
 }

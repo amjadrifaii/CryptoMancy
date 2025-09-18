@@ -43,9 +43,9 @@ public class BalanceDaoImpl implements BalanceDao {
     }
 
     @Override
-    public void update(User user, Balance balance)
+    public void update(Balance oldBalance,Balance newBalance)
     {
-        jdbcTemplate.update("UPDATE balances SET uid = ? WHERE uid = ?", user.getUid(),balance.getUid());
+        jdbcTemplate.update("UPDATE balances SET uid = ?,symbol = ?, amount = ? WHERE uid = ?", newBalance.getUid(), newBalance.getSymbol(), newBalance.getAmount(), oldBalance.getUid());
     }
     public static class BalanceRowMapper implements RowMapper<Balance>
     {

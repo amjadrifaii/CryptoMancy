@@ -74,8 +74,17 @@ public class BalanceDaoImplIntegrationTest {
     public void TestForUpdatingBalance()
     {
         User user = TestDataUtil.CreateUser();
+        userDaoImpl.create(user);
+
         Coin coin = TestDataUtil.CreateCoin();
+        Coin newCoin = TestDataUtil.CreateSecondCoin();
+        coinDaoImpl.create(coin);
+        coinDaoImpl.create(newCoin);
+
         Balance balance = TestDataUtil.CreateBalance(user, coin);
         underTest.create(balance);
+        Balance newBalance = TestDataUtil.CreateBalance(user,newCoin);
+        underTest.update(balance,newBalance);
+        System.out.println(underTest.findOne(user.getUid(),newCoin.getSymbol()));
     }
 }

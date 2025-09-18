@@ -11,4 +11,6 @@ public interface OrderDao {
     Optional<Order> findOne(long l);
 
     List<Order> findMany();
+
+    void update(Order oldOrder,Order newOrder);
 }

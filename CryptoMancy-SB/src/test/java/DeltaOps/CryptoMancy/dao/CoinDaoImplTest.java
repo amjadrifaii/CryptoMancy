@@ -1,5 +1,6 @@
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.CoinDaoImpl;
 import DeltaOps.CryptoMancy.domain.Coin;
 import org.junit.jupiter.api.Test;
@@ -43,5 +44,17 @@ public class CoinDaoImplTest {
     {
         underTest.findOne("ETH");
         verify(jdbcTemplate).query(eq("SELECT symbol, name, type, contract_address, network, logo_url, description FROM coins WHERE symbol = ? LIMIT 1"), ArgumentMatchers.<CoinDaoImpl.CoinRowMapper>any(), eq("ETH"));
+    }
+
+    @Test
+    public void TestUpdateCoin()
+    {
+        Coin oldcoin = TestDataUtil.CreateCoin();
+        Coin newCoin = TestDataUtil.CreateSecondCoin();
+
+        underTest.update(oldcoin,newCoin);
+        verify(jdbcTemplate).update(eq("UPDATE coins SET symbol = ?, name = ?, type = ?, contract_address = ?, network = ?, logo_url =?, description = ? WHERE symbol = ?"),
+                eq(newCoin.getSymbol()),eq(newCoin.getName()), eq(newCoin.getType()), eq(newCoin.getContractAddress()),
+                eq(newCoin.getNetwork()),eq(newCoin.getLogo_url()), eq(newCoin.getDescription()), eq(oldcoin.getSymbol()));
     }
 }

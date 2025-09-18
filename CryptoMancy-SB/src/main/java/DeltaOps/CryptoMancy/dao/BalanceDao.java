@@ -13,5 +13,5 @@ public interface BalanceDao {
 
     List<Balance> findMany();
 
-    void update(User user,Balance balance);
+    void update(Balance oldBalance,Balance newBalance);
 }

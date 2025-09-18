@@ -1,7 +1,11 @@
 package DeltaOps.CryptoMancy.dao;
 
+import DeltaOps.CryptoMancy.TestDataUtil;
 import DeltaOps.CryptoMancy.dao.impl.OrderDaoImpl;
+import DeltaOps.CryptoMancy.domain.Coin;
 import DeltaOps.CryptoMancy.domain.Order;
+import DeltaOps.CryptoMancy.domain.TradingPair;
+import DeltaOps.CryptoMancy.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -47,5 +51,23 @@ public class OrderDaoImplTest {
     {
         underTest.findOne(1);
         verify(jdbcTemplate).query(eq("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT 1"), ArgumentMatchers.<OrderDaoImpl.OrderRowMapper>any(),eq(1L));
+    }
+
+    @Test
+    public void TestUpdateOrder()
+    {
+        User user = TestDataUtil.CreateUser();
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+
+        TradingPair pair = TestDataUtil.CreateSecondTradingPair(firstCoin,secondCoin);
+        Order oldOrder = TestDataUtil.CreateOrder(user,pair);
+        Order newOrder = TestDataUtil.CreateSecondOrder(user,pair);
+        underTest.create(oldOrder);
+        underTest.create(newOrder);
+        underTest.update(oldOrder,newOrder);
+        verify(jdbcTemplate).update(eq("UPDATE orders SET oid = ?, uid = ?, pid = ?, side = ?, price = ?, amount = ?, status = ?, creation_date = ? WHERE oid = ?"),
+                eq(newOrder.getOid()), eq(newOrder.getUid()), eq(newOrder.getPid()), eq(newOrder.getSide()), eq(newOrder.getPrice()), eq(newOrder.getAmount()), eq(newOrder.getStatus()),eq(newOrder.getCreation_date()),eq(oldOrder.getOid()));
+
     }
 }

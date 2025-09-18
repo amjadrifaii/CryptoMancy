@@ -11,4 +11,6 @@ public interface CoinDao {
     Optional<Coin> findOne(String s);
 
     List<Coin> findMany();
+
+    void update(Coin oldcoin, Coin newCoin);
 }

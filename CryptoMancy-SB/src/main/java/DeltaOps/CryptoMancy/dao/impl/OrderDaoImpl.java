@@ -30,6 +30,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public void update(Order oldOrder,Order newOrder)
+    {
+        jdbcTemplate.update("UPDATE orders SET oid = ?, uid = ?, pid = ?, side = ?, price = ?, amount = ?, status = ?, creation_date = ? WHERE oid = ?",
+                newOrder.getOid(), newOrder.getUid(), newOrder.getPid(), newOrder.getSide(), newOrder.getPrice(), newOrder.getAmount(), newOrder.getStatus(),newOrder.getCreation_date(),oldOrder.getOid());
+    }
+
+    @Override
     public Optional<Order> findOne(long orderId)
     {
         List<Order> orders = jdbcTemplate.query("SELECT oid, uid, pid, side, price, amount, status, creation_date FROM orders WHERE oid = ? LIMIT 1", new OrderRowMapper(),orderId);

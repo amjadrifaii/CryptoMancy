@@ -26,6 +26,13 @@ public class CoinDaoImpl implements CoinDao {
         jdbcTemplate.update("INSERT INTO coins(symbol, name, type, contract_address, network,logo_url, description) VALUES(?, ?, ?, ?, ?, ?, ?)",
                 coin.getSymbol(), coin.getName(), coin.getType(), coin.getContractAddress(), coin.getNetwork(), coin.getLogo_url(), coin.getDescription());
     }
+    @Override
+    public void update(Coin oldCoin, Coin newCoin)
+    {
+        jdbcTemplate.update(
+                "UPDATE coins SET symbol = ?, name = ?, type = ?, contract_address = ?, network = ?, logo_url =?, description = ? WHERE symbol = ?",
+                newCoin.getSymbol(), newCoin.getName(),newCoin.getType(), newCoin.getContractAddress(), newCoin.getNetwork(), newCoin.getLogo_url(), newCoin.getDescription(),oldCoin.getSymbol());
+    }
     public Optional<Coin> findOne(String coinSymbol)
     {
         List<Coin> coins = jdbcTemplate.query("SELECT symbol, name, type, contract_address, network, logo_url, description FROM coins WHERE symbol = ? LIMIT 1",new CoinRowMapper(),coinSymbol);

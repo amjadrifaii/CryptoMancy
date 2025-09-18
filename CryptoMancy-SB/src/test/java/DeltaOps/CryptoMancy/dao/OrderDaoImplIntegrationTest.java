@@ -100,4 +100,32 @@ public class OrderDaoImplIntegrationTest {
             System.out.println(orders.get(i).getUid());
     }
 
+    @Test
+    public void TestForUpdatingOrder()
+    {
+        User user = TestDataUtil.CreateUser();
+        User secondUser = TestDataUtil.CreateSecondUser();
+        userDaoImpl.create(user);
+        userDaoImpl.create(secondUser);
+
+        Coin firstCoin = TestDataUtil.CreateCoin();
+        Coin secondCoin = TestDataUtil.CreateSecondCoin();
+        Coin thirdCoin = TestDataUtil.CreateThirdCoin();
+        coinDaoImpl.create(firstCoin);
+        coinDaoImpl.create(secondCoin);
+        coinDaoImpl.create(thirdCoin);
+
+        TradingPair firstPair = TestDataUtil.CreateTradingPair(firstCoin,secondCoin);
+        TradingPair secondPair = TestDataUtil.CreateSecondTradingPair(secondCoin,thirdCoin);
+        tradingPairDao.create(firstPair);
+        tradingPairDao.create(secondPair);
+
+        Order oldOrder = TestDataUtil.CreateOrder(user,firstPair);
+        Order newOrder = TestDataUtil.CreateSecondOrder(user,secondPair);
+        underTest.create(oldOrder);
+        underTest.update(oldOrder, newOrder);
+        System.out.println(underTest.findOne(newOrder.getOid()));
+
+
+    }
 }
